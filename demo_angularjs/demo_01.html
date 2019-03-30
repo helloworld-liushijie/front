@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>angularjs测试项目１</title>
+    <script src="https://cdn.staticfile.org/angular.js/1.4.6/angular.min.js"></script>
+    <style>
+        * {
+            background:#ced6e0
+        }
+        #demo1 table {
+            border:1px solid #aaa;
+            padding: 20px;
+            text-align: center;
+            margin:5px
+        }
+        #demo1 td {
+            width:200px
+        }
+    </style>
+</head>
+<body>
+
+    <!--    价格计算    -->
+    <div id="demo1_div" ng-app="test01" ng-controller="ctrl_demo01">
+        <form >
+                <fieldset>
+                    <legend>测试１</legend>
+                    <table>
+                            <tr>
+                                <td>单价:(美元)</td>
+                                <td>数量</td>
+                            </tr>
+                            <tr>
+                                <td><input type="text" ng-model="price"/></td>
+                                <td><textarea cols="20" rows="1" ng-model="num"></textarea></td>
+                            </tr>
+                    </table>
+                </fieldset>
+                金额:${{price*num}}
+            </form>
+    </div>
+    <br/>
+
+    <!--　尝试修改以下表单　-->
+    <div id="f_name" ng-app="full_name" ng-controller="ctrl1">
+        <fieldset>
+            <legend>测试2</legend>
+            <input type="text" ng-model="firstName"><br>
+            <input type="text" ng-model="lastName"><br>
+            姓名: {{firstName+lastName}}
+        </fieldset>
+    </div>
+    <br>
+
+    <!--     字符串拼接   -->
+    <div id="str_concat" ng-app="strApp" ng-controller="ctrl_strApp">
+        <fieldset>
+            <legend>测试3</legend>
+            <p>车程:{{fr+''+des}}</p>
+        </fieldset>
+    </div>
+    <script>
+        var app1 = angular.module('test01',[]);
+        app1.controller('ctrl_demo01',function($scope) {
+            $scope.price=0;
+            $scope.num=0;
+        })
+
+        var app2 = angular.module('full_name',[]);
+        app2.controller('ctrl1',function($scope) {
+            $scope.firstName = 'liu';
+            $scope.lastName = 'shijie';
+        })
+
+        var app3 =angular.module('strApp',[]);
+        app3.controller('ctrl_strApp',function($scope) {
+            $scope.fr='北京－';
+            $scope.des='重庆';
+        })
+        //解决多个ng-app只执行第一个问题
+        angular.bootstrap(document.getElementById("f_name"),['full_name']);
+        angular.bootstrap(document.getElementById("str_concat"),['strApp']);
+    </script>
+</body>
+</html>
