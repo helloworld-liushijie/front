@@ -8,10 +8,10 @@ angularjs 扩展了html
 - ng-model 指令把元素值（比如输入域的值）绑定到应用程序
 - ng-bind 指令把应用程序数据绑定到 HTML 视图
 ```
-<div ng-app="">
+<div ng-app=""> 
     <input type="text" ng-model="name"/>
     <h4>姓名:{{name}}</h4>
-</div>
+</div> 
 ```
 ---
 ###### 什么是angularjs?(<font color="#747d8c">angularjs指令以ng为前缀</font>)
@@ -23,7 +23,7 @@ angularjs 扩展了html
 ---
 ###### code
 - AngularJs模块
-```
+``` 
 var app = angular.module('myApp', []);
 ```
 - AngularJs控制器控制应用
@@ -31,6 +31,6 @@ var app = angular.module('myApp', []);
 app.controller('myCtrl', function($scope) {
     $scope.firstName= "John";
     $scope.lastName= "Doe";
-});
+}); 
 ```
 
