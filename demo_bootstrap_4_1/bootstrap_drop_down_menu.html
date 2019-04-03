@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>下拉菜单</title>
+    <script type="text/javascript" src="js/jquery-1.11.2.min.js"></script>
+    <script type="text/javascript" src="js/bootstrap.min.js"></script>
+    <link rel="stylesheet" href="css/bootstrap.min.css">
+</head>
+<body>
+    <div class="container">
+        <div class="dropdown pull-right">
+            <button class="btn btn-info dropdown-toggle" type="button" data-toggle="dropdown">
+                下拉菜单
+                <span class="caret"></span>
+            </button>
+            <!--
+                dropdown-menu-right
+                dropdown-menu-left
+            -->
+            <ul class="dropdown-menu" role="menu" aria-labelledby="dropdownMenu1">
+                <li role="presentation" class="dropdown-header">编程语言</li>
+                <li><a href="#" role="menuitem">java</a></li>
+                <li><a href="#" role="menuitem">css</a></li>
+                <li><a href="#" role="menuitem">html</a></li>
+                <li><a href="#" role="menuitem">c++</a></li>
+                <!-- 分割线 -->
+                <li role="presentation" class="divider"></li>
+                <li role="presentation" class="dropdown-header">水果</li>
+                <li><a href="#" role="menuitem">荔枝</a></li>
+                <li class="disabled"><a href="#" role="menuitem">梨子</a></li>
+                <li><a href="#" role="menuitem">李子</a></li>
+                <li><a href="#" role="menuitem">栗子</a></li>
+            </ul>
+        </div>
+    </div>
+
+    <div class="container">
+        <!-- 此处添加dropup 箭头会朝上 -->
+        <div class="btn-group dropup">
+            <button type="button" class="btn btn-info">分裂式下拉菜单</button>
+            <button type="button" class="btn btn-warning dropdown-toggle" data-toggle="dropdown">
+                <span class="caret"></span>
+            </button>
+            <ul class="dropdown-menu" role="menu">
+                <li><a href="#">1</a></li>
+                <li><a href="#">1</a></li>
+                <li><a href="#">1</a></li>
+                <li><a href="#">1</a></li>
+            </ul>
+        </div>
+    </div>
+</body>
+</html>

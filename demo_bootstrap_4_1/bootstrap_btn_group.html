@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>按钮组</title>
+    <script type="text/javascript" src="js/jquery-1.11.2.min.js"></script>
+    <script type="text/javascript" src="js/bootstrap.min.js"></script>
+    
+    <link rel="stylesheet" href="css/bootstrap.min.css">
+    <link rel="stylesheet" href="fonts/glyphicons-halflings-regular.eot">
+    <link rel="stylesheet" href="fonts/glyphicons-halflings-regular.svg">
+    <link rel="stylesheet" href="fonts/glyphicons-halflings-regular.ttf">
+    <link rel="stylesheet" href="fonts/glyphicons-halflings-regular.woff">
+    <link rel="stylesheet" href="fonts/glyphicons-halflings-regular.woff2">
+</head>
+<body>
+    <div class="container">
+        <!-- btn组垂直 -->
+        <div class="btn-group btn-group-vertical">
+            <button class="btn btn-info">info</button>
+            <button class="btn btn-danger">danger</button>
+            <button class="btn btn-default">default</button>
+        </div>
+    </div>
+
+    <div class="btn-toolbar">
+        <div class="btn-group">
+            <button type="button" class="btn btn-default"><span class="glyphicon glyphicon-asterisk"></span></button>
+            <button type="button" class="btn btn-default"><span class="glyphicon glyphicon-home"></span></button>
+        </div>
+        <div class="btn-group">
+            <button type="button" class="btn btn-default"><span class="glyphicon glyphicon-zoom-in"></span></button>
+            <button type="button" class="btn btn-default"><span class="glyphicon glyphicon-lock"></span></button>
+        </div>
+        <br>
+        <div class="btn-group">
+            <button type="button" class="btn btn-default">1</span></button>
+            <button type="button" class="btn btn-default">2</span></button>
+            <div class="btn-group">
+                <button type="button" class="btn btn-danger dropdown-toggle" data-toggle="dropdown">
+                    下拉菜单 <span class="caret"></span>
+                </button>
+                <ul class="dropdown-menu" role="menu">
+                   <li><a href="#">点击</a></li>
+                   <li><a href="#">点击</a></li>
+                   <li><a href="#">点击</a></li>
+                   <li><a href="#">点击</a></li>
+                </ul>
+            </div>
+        </div>
+    </div>
+
+    <div class="btn-group btn-group-justified">
+        <div class="btn-group">
+            <button type="button" class="btn btn-info">left</button>
+        </div>
+        <div class="btn-group">
+            <button type="button" class="btn btn-warn">middle</button>
+        </div>
+        <div class="btn-group">
+            <button type="button" class="btn btn-success">right</button>
+        </div>
+    </div>
+</body>
+</html>

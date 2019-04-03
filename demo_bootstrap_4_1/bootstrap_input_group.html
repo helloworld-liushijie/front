@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>bootstrap输入框组</title>
+    <script type="text/javascript" src="js/jquery-1.11.2.min.js"></script>
+    <script type="text/javascript" src="js/bootstrap.min.js"></script>
+    <link rel="stylesheet" href="css/bootstrap.min.css">
+</head>
+<body>
+    <div class="container">
+        <div class="input-group col-sm-4">
+            <span class="input-group-addon">@</span>
+            <input type="text" class="form-control" placeholder="UserName">
+        </div>
+        <div class="input-group col-sm-4">
+            <input type="text" class="form-control" placeholder="password">
+            <span class="input-group-addon">.00</span>
+        </div>
+        <div class="input-group col-sm-4">
+            <span class="input-group-addon">$</span>
+            <input type="text" class="form-control" placeholder="money">
+            <span class="input-group-addon">.00</span>
+        </div>
+        <div class="row">
+            <div class="col-lg-6">
+                <div class="input-group">
+                    <span class="input-group-btn">
+                        <button class="btn btn-warning" type="button">go!</button>
+                    </span>
+                    <input type="text" class="form-control" placeholder="text">
+                    <div class="input-group-btn">
+                        <button class="btn btn-warning dropdown-toggle" type="button" data-toggle="dropdown">
+                            下拉菜单
+                            <span class="caret"></span>
+                        </button>
+                        <ul class="dropdown-menu" role="menu">
+                            <li><a href="#" role="menuitem">1</a></li>
+                            <li><a href="#" role="menuitem">1</a></li>
+                            <li><a href="#" role="menuitem">1</a></li>
+                            <li><a href="#" role="menuitem">1</a></li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+</html>
