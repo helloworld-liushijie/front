@@ -7,24 +7,47 @@
     <title>前端测试</title>
     <script type="text/javascript" src="js/jquery-1.11.2.min.js"></script>
     <script type="text/javascript" src="js/font.js"></script>
+    <style>
+        .highlight {
+            background: #7bed9f;
+            color: white
+        }
+    </style>
 </head>
 <body>
-     <a href="#" onclick="upload_file();">文件上传</a>
+    <a href="#" onclick="upload_file();">文件上传</a>
      <!-- 代码调试
         $_ 
         $('li')
         $x('\\li[ul]')
     -->
-     <ul>
-         <li>节点1</li>
-         <li>节点2</li>
-         <li>
-             <ul>
-                 <li>节点3子节点</li>
-                 <li>节点3子节点</li>
-             </ul>
-         <li>节点4</li>
-     </ul>
-     <input type="file">
+    <ul>
+        <li>节点1</li>
+        <li>节点2</li>
+        <li>
+            <ul>
+                <li>节点3子节点</li>
+                <li>节点3子节点</li>
+            </ul>
+        <li>节点4</li>
+    </ul>
+    <input type="file">
+
+    <div>
+        <span id="xss_span"></span>
+    </div>
+    <!--
+    input键入 <script>alert('攻击成功')</script>xss攻击成功
+    -->
+    <input id="xss_text" type="text"/>
+    <button onclick="xss_attack()">xss攻击</button>
+
+    <script>
+        function xss_attack() {
+            $("#xss_span").append($("#xss_text").val());
+        }
+    </script>
+
+
 </body>
 </html>

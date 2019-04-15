@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>评论页面(预防xss攻击)</title>
+    <link rel="stylesheet" href="css/bootstrap.min.css">
+    <script type="text/javascript" src="js/jquery-1.11.2.min.js"></script>
+    <script type="text/javascript" src="js/bootstrap.min.js"></script>
+    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/dompurify/1.0.10/purify.min.js"></script>
+    <link rel="stylesheet" href="fonts/glyphicons-halflings-regular.eot">
+    <link rel="stylesheet" href="fonts/glyphicons-halflings-regular.svg">
+    <link rel="stylesheet" href="fonts/glyphicons-halflings-regular.ttf">
+    <link rel="stylesheet" href="fonts/glyphicons-halflings-regular.woff">
+    <link rel="stylesheet" href="fonts/glyphicons-halflings-regular.woff2">
+</head>
+<body>
+    <div class="container">
+        <form class="add_comment">
+            <textarea class="form-control comment_text" rows="3" style="max-width:500px"></textarea><br>
+            <button class="btn btn-primary">POST</button>
+            <div class="comment"></div>
+        </form>
+    </div>
+    <br>
+
+    <script>
+        const add_comment = document.querySelector(".add_comment");
+        const comment_text = document.querySelector(".comment_text");
+        const comment_div = document.querySelector(".comment");
+        const user = '刘世杰';
+        add_comment.addEventListener('submit',function(event) {
+            event.preventDefault();
+            const new_comment = comment_text.value.trim();
+            if(new_comment) {
+                comment_div.innerHTML = sanitize`<br>
+                    <div class="panel panel-default col-md-4 ">
+                        <label class="glyphicon glyphicon-leaf"></label>
+                        <div class="panel-head comment-header">${user}</div>
+                        <label class="glyphicon glyphicon-comment"></label>
+                        <div class="panel-body comment-body">${new_comment}</div>
+                    </div>
+                `
+                comment_text.value = '';
+            }
+        })
+
+        /**
+         *  DOMPurify防xss攻击
+         * 
+         *  xss攻击
+         *  <img src="https://timgsa.baidu.com/timg?image&quality=80&size=b9999_10000&sec=1555220993872&di=2ddbe609e6afe861b219ab650e990d8a&imgtype=0&src=http%3A%2F%2Fhbimg.b0.upaiyun.com%2Fccb2592825d67c1d9b4d6e13021a6f40550c201424615-DV5gAI_fw658" 
+         *  onclick="function a(){
+         *      for(let i = 0;i<1000;i++) {
+         *          alert('xss攻击');
+         *      }
+         *  } 
+         *  a();"></img>
+         */
+        function sanitize(strings,...values) {
+            const dirty = strings.reduce((prev,curr,i) => `${prev}${curr}${values[i] || ''}`,'');
+            return DOMPurify.sanitize(dirty);
+            //return dirty;
+        }
+
+        function appendChildDiv(options = {}) {
+            const {parent = 'body',width = '100px',height = '80px',backgroundColor = 'pink'} = options;
+            const div = document.createElement('div');
+            div.style.width = width;
+            div.style.height = height;
+            div.style.backgroundColor = backgroundColor;
+
+            document.querySelector(parent).appendChild(div);
+        }
+
+        appendChildDiv({
+            parent : '.container',
+            width : '200px',
+            height : '150px',
+            //backgroundColor : '#78e08f'
+        })
+    </script>
+</body>
+</html>

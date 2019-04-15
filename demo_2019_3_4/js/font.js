@@ -7,6 +7,54 @@
 //eval最常见的场合是解析 JSON 数据的字符串，不过正确的做法应该是使用原生的JSON.parse方法。
 
 $(function() {
+    template_use();
+})
+
+function template_use() {
+    const user = 'mary';
+    const topic = 'markdown write it';
+    const temp = highlight`${user} was sasy ${topic}`;
+    document.body.innerHTML = temp;
+}
+
+/**
+ * 标签模板使用
+ */
+function add_nodes() {
+    const jelly = {
+        name:'jelly',
+        age:20,
+        todos:[
+            {name:'jelly',todo:'遛狗',complete:false},
+            {name:'bool',todo:'哈哈哈',complete:true},
+            {name:'sj',todo:'sd',complete:true}
+        ]
+    }
+
+    let template = `<ul>
+        ${jelly.todos.map(todo => `<li>${todo.name} ${todo.complete ? '✔' : '❌'}</li>`).join('')}
+        </ul>
+        `;
+    document.body.innerHTML = template;
+}
+
+/**
+ * 标签模板
+ */
+function highlight(strings,...values) {
+    //debugger;
+    const highlighted = values.map(value => `<span class="highlight">${value}</span>`);
+    let str = '';
+    strings.forEach((string,i) => str += `${string}${highlighted[i] || ''}`);
+    return strings.reduce((prev,curr,i) => `${prev}${curr}${highlighted[i] || ''}`,'');
+    //return str;
+    //return 'laravist';
+}
+
+/**
+ * 查找字符串第一个出现次数超过一次的字符
+ */
+function appear() {
     var str = "abcda";
     var num = 0;
     for(var i = 0;i < str.length;i++) {1
@@ -23,7 +71,16 @@ $(function() {
             console.log(str[i]);
         } 
     }
-})
+}
+
+function let_var() {
+    //此处使用let声明,使用var会重复打印10
+    for(let i = 0;i < 10;i++) {
+        setTimeout(() => {
+            console.log(i);
+        }, 1000);
+    }
+}
 
 /**
  * 文件上传--只允许图片上传
