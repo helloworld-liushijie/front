@@ -75,9 +75,54 @@
             </div>
         </div>
     </div>
+
+    <button type="button" class="btn btn-success" data-toggle="modal" data-target="#modal_mine" data-whatever="@ime">click</button>
+    <div class="modal fade bs-example-modal-lg" id="modal_mine" role="dialog" aria-label="myLabel" aria-hidden="true">
+        <div class="modal-dialog modal-lg">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal"aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                    <h4 class="modal-title">Modal Title</h4>
+                </div>
+                <div class="modal-body">
+                    <form>
+                        <div class="form-group">
+                            <label class="control-label">username</label>
+                            <input type="text" class="form-control">
+                        </div>
+                        <div class="form-group">
+                            <label class="control-label">password</label>
+                            <input type="text" class="form-control">
+                        </div>
+                    </form>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-success" data-dismiss="modal" aria-labelledby="Close">
+                        Close
+                    </button>
+                    <button type="button" class="btn btn-success">
+                        Ok
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
     <script>
+        //$("#modal_mine").modal("show");
+        $("#modal_mine").modal({
+            //点击空白处不消失,没有遮罩效果
+            backdrop:false
+        })
+        $("#modal_mine").on('show.bs.modal',function(event) {
+            var button = $(event.relatedTarget);
+            var recipient = button.data('whatever');
+            var modal = $(this);
+            modal.find(".modal-title").text("new Message to"+recipient);
+            modal.find('.modal-body input').val(recipient);
+        })
         $("#exampleModal").on('show.bs.modal',function(event) {
-            debugger;
             var button = $(event.relatedTarget);
             var recipient = button.data('whatever');
             var modal = $(this);
