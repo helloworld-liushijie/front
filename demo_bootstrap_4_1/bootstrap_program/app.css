@@ -103,7 +103,6 @@ h1,h3,p,a,button {
     background: #d1e973;
     opacity: 0.8;
     transition: opacity 2s;
-    -webkit-animation: opacity 0.5s
 }
 
 .twopagebtn {
