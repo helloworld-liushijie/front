@@ -59,7 +59,7 @@ h1,h3,p,a,button {
     margin-top: -20px
 }
 
-.twopage .row {
+.twopage,.threepage .row {
     margin-right:  0px;
     margin-left: 0px
 }
@@ -112,7 +112,7 @@ h1,h3,p,a,button {
     text-align: center
 }
 
-.twopage .btn-lg {
+.twopage,.threepage .btn-lg {
     font-size: 25px
 }
 
@@ -121,6 +121,36 @@ h1,h3,p,a,button {
     margin-bottom: 100px
 }
 
-.twopage img {
+.twopage,.threepage img {
     height: 680px
+}
+
+.side-nav {
+    position: fixed;
+    top: 45%;
+    right: 20px;
+    z-index: 1
+}
+
+.side-nav ul.nav-side-nav {
+    text-align: center;
+    margin: 0;
+    padding-left: 0;
+    list-style: none
+}
+
+.side-nav ul.nav-side-nav >li {
+    display: block;
+    line-height: 1.45em;
+    margin: 0;
+    padding: 8px 0
+}
+
+.side-nav ul.nav-side-nav >li >a {
+    display: block;
+    width: 15px;
+    height: 15px;
+    border-radius: 50%;
+    background: #e2e2e2;
+    opacity: 0.5;
 }
