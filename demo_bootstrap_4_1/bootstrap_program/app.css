@@ -1,0 +1,156 @@
+/*自定义css样式*/
+h1,h3,p,a,button {
+    font-family: Arial, Helvetica, sans-serif
+}
+
+.onepage-bg {
+    height: 800px;
+    width: 100%;
+    position: absolute;
+    background-position: center center;
+    background-size: cover
+}
+
+#onepagebg {
+    position: fixed;
+    background-image: url("../img/p3.jpg");
+}
+
+.head1content {
+    margin-top: 150px;
+    line-height: 75px
+}
+
+.title-text {
+    margin-left: 50px
+}
+
+.headfontsize h1{
+    font-size: 50pt;
+    color:#ffffff
+}
+
+.headfontsize p{
+    color:#ffffff
+}
+
+/* .twopage {
+    padding:2px 0 0 2px;
+    height: auto;
+    background-image: url("../img/girl03.jpg");
+    position: relative;
+} */
+
+.twopage-text {
+    width : 100%;
+    text-align: center
+}
+
+.twopage-text-h1 {
+    margin-left: 120px;
+    letter-spacing: 2px;
+    margin-top: 80px;
+    margin-bottom: 0;
+    padding: 20px 0 0 0
+}
+
+.twopage-text-h1 img {
+    width: 120px;
+    margin-top: -20px
+}
+
+.twopage,.threepage .row {
+    margin-right:  0px;
+    margin-left: 0px
+}
+
+.twopage-courses {
+    float: left;
+    background: #ffffff;
+    padding: 0 2px 2px 0;
+    position: relative;
+    overflow: hidden;
+}
+
+.twopage-courses >a {
+    width: 100%;
+    height: 100%;
+    float: left;
+    text-align: center;
+    position: relative;
+}
+
+.classicon h1 {
+    color: #fff5e1
+}
+
+.classicon h3 {
+    margin-top: 120px;
+    color: #d1e973
+}
+
+.classicon {
+    width: 100%;
+    height: 100%;
+    position: absolute;
+    left: 0;
+    top: 0;
+    color: #fff;
+    opacity: 0;
+}
+
+.classicon:hover {
+    background: #d1e973;
+    opacity: 0.8;
+    transition: opacity 2s;
+    -webkit-animation: opacity 0.5s
+}
+
+.twopagebtn {
+    width: 100%;
+    margin: 0 auto;
+    text-align: center
+}
+
+.twopage,.threepage .btn-lg {
+    font-size: 25px
+}
+
+#twopage-easy {
+    margin: 50px 0;
+    margin-bottom: 100px
+}
+
+.twopage,.threepage img {
+    height: 680px
+}
+
+.side-nav {
+    position: fixed;
+    top: 45%;
+    right: 20px;
+    z-index: 1
+}
+
+.side-nav ul.nav-side-nav {
+    text-align: center;
+    margin: 0;
+    padding-left: 0;
+    list-style: none
+}
+
+.side-nav ul.nav-side-nav >li {
+    display: block;
+    line-height: 1.45em;
+    margin: 0;
+    padding: 8px 0
+}
+
+.side-nav ul.nav-side-nav >li >a {
+    display: block;
+    width: 15px;
+    height: 15px;
+    border-radius: 50%;
+    background: #e2e2e2;
+    opacity: 0.5;
+}
