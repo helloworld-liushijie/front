@@ -8,6 +8,9 @@ window.onload = function() {
     //es6.spread_in_fun();
     //es6.literal();
     //es6.promise();
+    //es6.build_promise();
+    //es6.promise_instance();
+    es6.all_promise();
 }
 
 var es6 = {
@@ -158,6 +161,106 @@ var es6 = {
             })
             .catch(err => {
                 //打印错误信息
+                console.error(err);
+            })
+    },
+    //构建promise
+    build_promise:function() {
+        /** resolve:请求成功    reject:请求失败 */
+        const p = new Promise((resolve,reject) => {
+            setTimeout(() => {
+                //resolve('Laravist is awesome!');
+                //reject('Laravist is wrong');
+                //Error可以指出真实错误地址
+                reject(new Error('Laravist is wrong'));
+            }, 2000);
+        })
+
+        p.then(data => {
+            console.log(data);
+        }).catch(err => {
+            console.error(err);
+        })
+    },
+    //promise实例创建
+    promise_instance:function() {
+        const repos = [
+            {name: 'grit',owner: 'mojobo',description: 'Grit is no longer maintained',id: 1},
+            {name: 'jsawesome',owner :'vanpelt',description:' Awesome Json',id: 2},
+            {name: 'merb-core',owner :'wycats',description: 
+                'Merb Core:All you need.Non you don\'t.',id:3}
+        ]
+
+        const owners = [
+            {name: 'mojombo',location: 'San Francisco',followers: 123},
+            {name: 'vanpelt',location: 'Bay Minette',followers: 1034},
+            {name: 'wycats', location: 'Los Angeles,CA',followers: 388}
+        ]
+
+        function getRepoById(id) {
+            return new Promise((resolve,reject) => {
+                setTimeout(() => {
+                    const repo = repos.find(repo => repo.id === id);
+                    if(repo) {
+                        resolve(repo);
+                    } else {
+                        reject(Error('No Repo Find!'));
+                    }
+                }, 2000);
+            })
+        }
+
+        getRepoById(3)
+            .then(repo => {
+                return comboundOwner(repo);
+            })
+            .then(repo => {
+                console.log(repo);
+            })
+            .catch(err => {
+                console.error(err);
+            })
+
+        function comboundOwner(repo) {
+            return new Promise((resolve,reject) => {
+                setTimeout(() => {
+                    const owner = owners.find(owner => owner.name === repo.owner);
+                    if(owner) {
+                        repo.owner = owner;
+                        resolve(repo);
+                    } else {
+                        reject(Error('can\'t found the owner!'));
+                    }
+                }, 2000);
+            })
+        }
+    },
+    //处理多个promise
+    all_promise:function() {
+        const usersPromise = new Promise((resolve,rejecct) => {
+            setTimeout(() => {
+                resolve(['mojombo','vanpelt','wycats']);
+            }, 2000);
+        })
+
+        const moviewPromise = new Promise((resolve,reject) => {
+            setTimeout(() => {
+                //reject(new Error('no reject'));
+                resolve({name: '摔跤吧,爸爸！',rating: 9.2,year: 2016})
+            }, 500);
+        })
+
+        Promise
+            //全部成功才算成功,否则抛出异常
+            .all([usersPromise,moviewPromise])
+            //不同于all,由第一个的返回状态决定
+            //.race([usersPromise,moviewPromise])
+            .then(response => {
+                const [user,movie] = response;
+                console.log(user);
+                console.log(movie);
+            })
+            .catch(err => {
                 console.error(err);
             })
     }
