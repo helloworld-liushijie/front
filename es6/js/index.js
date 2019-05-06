@@ -10,7 +10,8 @@ window.onload = function() {
     //es6.promise();
     //es6.build_promise();
     //es6.promise_instance();
-    es6.all_promise();
+    //es6.all_promise();
+    es6.symbol_type();
 }
 
 var es6 = {
@@ -237,7 +238,7 @@ var es6 = {
     },
     //处理多个promise
     all_promise:function() {
-        const usersPromise = new Promise((resolve,rejecct) => {
+        const usersPromise = new Promise((resolve,reject) => {
             setTimeout(() => {
                 resolve(['mojombo','vanpelt','wycats']);
             }, 2000);
@@ -263,5 +264,18 @@ var es6 = {
             .catch(err => {
                 console.error(err);
             })
+    },
+    //es6新增symbol数据类型,是一种特殊的、不可变的数据类型，用来生成唯一的标识符
+    symbol_type:function() {
+        const classRoom = {
+            [Symbol('lily')] : {grade: 90,gender: 'female'},
+            [Symbol('nina')] : {grade: 80,gender: 'female'},
+            //可用于解决此处存在的属性覆盖问题
+            [Symbol('nina')] : {grade: 90,gender: 'female'},
+        }
+
+        //symbol遍历方法,symbol不能for...in等遍历
+        const syms = Object.getOwnPropertySymbols(classRoom).map(sym => classRoom[sym]);
+        console.log(syms);
     }
 }

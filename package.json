@@ -1,0 +1,19 @@
+{
+  "name": "eslint",
+  "version": "1.0.0",
+  "description": "- demo_2019_3_27/index.html - [页面预览](https://helloworld-liushijie.github.io/front/demo_2019_3_27/index.html) ###### 图片悬浮效果 - demo_2019_3_30/index.html - [页面预览](https://helloworld-liushijie.github.io/front/demo_2019_3_30/index.html)",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/helloworld-liushijie/front.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/helloworld-liushijie/front/issues"
+  },
+  "homepage": "https://github.com/helloworld-liushijie/front#readme"
+}
