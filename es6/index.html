@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>ES6</title>
+    <style>
+        body {
+            /* background-color: #c7ecee; */
+            text-align: center;
+            justify-content: center;
+            align-items: center;
+            font-family: sans-serif;
+            font-size: 50px;
+            color: #38ada9;
+            text-shadow: 3px 3px 0 rgba(0,0,0,0.2)
+        }
+
+        .heading span {
+            cursor: pointer;
+            display: inline-block;
+            transition: transform 0.25s
+        }
+
+        .heading span:hover {
+            transform: translateY(-20px) rotate(10deg) scale(2);
+            color: #ff7f50
+        }
+    </style>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/axios/0.17.1/axios.min.js"></script>
+    <script src="js/index.js"></script>
+</head>
+<body>
+    <h2 class="heading">LARAVIST!</h2>
+    <script>
+        /** 使用扩展运算符完成鼠标移动特效 */
+        const heading = document.querySelector(".heading");
+        heading.innerHTML = wrapwithSpan(heading.textContent);
+        function wrapwithSpan(word) {
+            return [...word].map(letter => `<span>${letter}</span>`).join('');
+        }
+    </script>
+</body>
+</html>
