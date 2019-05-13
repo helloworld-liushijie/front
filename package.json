@@ -15,5 +15,8 @@
   "bugs": {
     "url": "https://github.com/helloworld-liushijie/front/issues"
   },
-  "homepage": "https://github.com/helloworld-liushijie/front#readme"
+  "homepage": "https://github.com/helloworld-liushijie/front#readme",
+  "devDependencies": {
+    "webpack-cli": "^3.3.2"
+  }
 }

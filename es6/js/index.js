@@ -11,7 +11,7 @@ window.onload = function() {
     //es6.build_promise();
     //es6.promise_instance();
     //es6.all_promise();
-    es6.symbol_type();
+    //es6.symbol_type();
 }
 
 var es6 = {
