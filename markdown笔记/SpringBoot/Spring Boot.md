@@ -229,43 +229,367 @@ public @interface SpringBootApplication {
 
 @SpringBootConfiguration:springboot的配置
 
-	> 标注在某个类上,表示这是一个SpringBoot的配置类
-	>
-	> ```
-	> @Configuration:配置类上来标注这个注解
-	> 	配置类---配置文件；配置类也是容器中的一个组件@Component
-	> ```
+> 标注在某个类上,表示这是一个SpringBoot的配置类
+>
+> ```
+> @Configuration:配置类上来标注这个注解
+> 	配置类---配置文件；配置类也是容器中的一个组件@Component
+> ```
 
 @EnableAutoConfiguration:开启自动配置功能
 
-	> 以前我们需要配置的东西,SpringBoot帮我们自动配置；@EnableAutoConfiguration告诉springboot开启自动配置功能，这样配置才能生效
-	>
-	> ```java
-	> @Target(ElementType.TYPE)
-	> @Retention(RetentionPolicy.RUNTIME)
-	> @Documented
-	> @Inherited
-	> @AutoConfigurationPackage
-	> @Import(AutoConfigurationImportSelector.class)
-	> public @interface EnableAutoConfiguration {
-	> }
-	> ```
-	>
-	> @AutoConfigurationPackage:自动配置包
-	>
-	> ```tex
-	> @Import(AutoConfigurationPackages.Registrar.class)
-	> Spring的底层注解@import,给容器导入一个组件;导入的组件由AutoConfigurationPackages.Registrar.class
-	> ```
-	>
-	> <font style="background:yellow">将主配置类(@SpringBootApplication标注的类)的所在包及下面所有子包里面的所有组件扫描到spring容器</font>
-	>
-	> ```tex
-	> @Import(EnableAutoConfigurationImportSelector.class)
-	> 给容器中导入组件
-	> EnableAutoConfigurationImportSelector：导入组件选择器
-	> 将所有需要导入的组件以全类名的方式返回,这些组件就会被添加到容器中;
-	> 会给容器中导入非常多的自动配置类(xxxAutoCofiguration);就是给容器中导入这个场景需要的所有组件，并配置好这些组件
-	> 有了自动配置类，免去我们手动编写配置注入功能组件的工作
-	> ```
+> 以前我们需要配置的东西,SpringBoot帮我们自动配置；@EnableAutoConfiguration告诉springboot开启自动配置功能，这样配置才能生效
+>
+> ```java
+> @Target(ElementType.TYPE)
+> @Retention(RetentionPolicy.RUNTIME)
+> @Documented
+> @Inherited
+> @AutoConfigurationPackage
+> @Import(AutoConfigurationImportSelector.class)
+> public @interface EnableAutoConfiguration {
+> }
+> ```
+
+@AutoConfigurationPackage:自动配置包
+@Import(AutoConfigurationPackages.Registrar.class)
+
+> Spring的底层注解@import,给容器导入一个组件;导入的组件由AutoConfigurationPackages.Registrar.class
+
+<font style="background:yellow">将主配置类(@SpringBootApplication标注的类)的所在包及下面所有子包里面的所有组件扫描到spring容器</font>
+
+> 给容器中导入组件
+> EnableAutoConfigurationImportSelector：导入组件选择器
+> 将所有需要导入的组件以全类名的方式返回,这些组件就会被添加到容器中;
+> 会给容器中导入非常多的自动配置类(xxxAutoCofiguration);就是给容器中导入这个场景需要的所有组件，并配置好这些组件
+> 有了自动配置类，免去我们手动编写配置注入功能组件的工作
+
+```java
+SpringFactoriesLoader.loadFactoryNames(
+    getSpringFactoriesLoaderFactoryClass(), getBeanClassLoader());
+```
+
+<font style="background:yellow">Springboot在启动的时候从类路径下的META-INF/spring.factories中获取EnableAutoCOnfiguration,将这些值作为自动配置类导入到容器中,自动配置类生效,帮我们进行自动配置工作</font>;以前需要我们自动配置的东西，自动配置类都帮我们配置完成
+
+J2EE的整体整合解决方案和自动配置都在spring-boot-autoconfigure-***.RELEASE.jar
+
+## 5.使用spring initializer快速创建Spring Boot项目
+
+IDE都支持使用Spring的项目创建向导快速创建spring boot项目
+
+[使用IDEA搭建第一个SpringBoot程序](https://segmentfault.com/a/1190000013016655)
+
+默认生成的SpringBoot项目:
+
+	- 主程序已经生成好了，我们只需要自己的逻辑
+ - resources文件夹中目录结果
+   	- static:保存所有的静态资源(js css images)
+      	- templates:保存所有的模板页面(springboot默认jar包使用嵌入式的tomcat.默认不支持jsp页面)；可以使用模板引擎(freemarker,thymeleaf)
+   	- application.properties:springboot应用的配置文件;可以修改一些默认配置
+
+简化配置@RestController
+
+```java
+/*@Controller
+@ResponseBody*/ //这个类的所有方法返回的数据直接写给浏览器(如果是对象转为json数据)
+@RestController //替换@Controller @ResponseBody注解
+public class HelloController {
+
+    @RequestMapping("/hello")
+    public String hello() {return "hello world quick";}
+
+    @RequestMapping("/map")
+    public Map<String,Object> map() {
+        Map<String,Object> map = new HashMap<String,Object>();
+        map.put("1","apple");
+        map.put("2","banans");
+        return map;
+    }
+}
+```
+
+
+
+# 二、配置文件
+
+## 1.配置文件
+
+springboot使用一个全局的配置文件,配置文件名是固定的
+
+- application.properties
+- application.yml
+
+配置文件的作用:修改springboot自动配置的默认值,springboot在底层都给我们自动配置好
+
+yml(YAML YAML Ain't Maekup language):yaml不是一个标记语言
+
+标记语言:
+
+​	以前的配置文件:大多都是使用的xxx.xml文件
+
+​	yml:以数据为中心,比json,xml等更适合做配置文件
+
+YAML:(application.yml)
+
+```yaml
+server:
+  port: 8081
+```
+
+XML:(浪费大量数据在xml开闭上)
+
+```xml
+<server>
+	<port>8081</port>
+</server>
+```
+
+## 2.YAML语法
+
+### 1.基本语法
+
+k:(空格)v 表示一对键值对(<font style="background:yellow">空格</font>必须有)
+
+以空格的缩进来控制层级关系;只要是左对齐的一列数据,都是同一个层级的
+
+```yaml
+server:
+    port:8081
+    path:/hello
+```
+
+属性和值都是大小写敏感
+
+### 2.值的写法
+
+字面量:普通的值(数字,字符串,布尔值):
+
+k: v:字面直接写(字符串默认不用加单引号或双引号)
+
+​	"":双引号;不会转义字符串里面的特殊字符；特殊字符会作为本身想表达的意思
+
+​			name:"zhangsan \n lisi":输出--zhangsan 换行 lisi
+
+​	'' :单引号;会转义特殊字符,特殊字符最终只是一个普通的字符串数据
+
+​			name:'zhangsan \n lisi':输出-- zhangsan \n lisi
+
+对象(属性和值)(键值对):
+
+​	k: v :对象还是k: v的形式,在下一行写对象的属性和值的关系;注意缩进
+
+```yaml
+friends:
+ lastName: zhangsan
+ age: 20
+```
+
+行内写法
+
+```yaml
+friends: {lastName: zhangsan,age: 20}
+```
+
+数组(List,Set):
+
+​	用- 表示数组中的一个元素
+
+```yaml
+pets:
+ - cat
+ - dog
+ - pig
+```
+
+行内写法
+
+```yaml
+pets: [cat,dog,pig]
+```
+
+springboot单元测试:
+
+```java
+/**
+ * SpringBoot单元测试
+ *
+ * 可以在测试期间很方便的类似编码一样进行自动注入
+ */
+@RunWith(SpringRunner.class)
+@SpringBootTest
+public class HelloApplicationTest {
+
+    @Autowired
+    Person person;
+
+    @Test
+    public void contextLoads() {
+        System.out.println(person);
+    }
+}
+```
+
+person:
+
+```java
+/**
+ * 将yml配置文件值映射到组件中
+ * @ConfigurationProperties: 告诉springboot类将本类中的所有属性和配置文件中相关的配置进行绑定
+ * prefix = "person":配置文件中哪个下面的属性进行一一映射
+ */
+@Component //必须使用该注解
+@ConfigurationProperties(prefix = "person")
+public class Person {
+
+    private String lastName;
+
+    private Integer age;
+
+    private Boolean boss;
+
+    private Date birth;
+
+    private Map<String,Object> maps;
+
+    private List<Object> lists;
+
+    private Dog dog;
+}
+```
+
+dog:
+
+```java
+public class Dog {
+
+    private String name;
+
+    private Integer age;
+}
+```
+
+### 3.配置文件值注入
+
+#### 1.配置写法
+
+配置文件:(application.yml)
+
+``` 
+person:
+  lastName: zhangsan
+  age: 18
+  boss: false
+  birth: 2017/12/12
+  maps: {k1: v1,k2: 12}
+  lists:
+    - lisi
+    - zhaoliu
+  dog:
+    name: xiaogou
+    age: 2  
+```
+
+导入配置文件处理器,以后编写配置就有提示了
+
+```xml
+<dependency>
+    <groupId>org.springframework.boot</groupId>
+    <artifactId>spring-boot-configuration-processor</artifactId>
+    <optional>true</optional>
+</dependency>
+```
+
+#### 2.乱码解决
+
+properties乱码解决方案:setting>FileEncodings勾选(有时候会不起作用,多试几下) ---推荐yml
+
+![](./picture/p3.png)
+
+tips:注解提示忽略大小写
+
+> setting - 取消勾选Match Case
+
+#### 3.@Value获取值和@Configuration获取值的区别
+
+```java
+/**
+ * 将yml配置文件值映射到组件中
+ * @ConfigurationProperties: 告诉springboot类将本类中的所有属性和配置文件中相关的配置进行绑定
+ * prefix = "person":配置文件中哪个下面的属性进行一一映射
+ */
+@Component
+//@ConfigurationProperties(prefix = "person")
+public class Person {
+
+    /**
+     * <bean class="Person">
+     *  <properties name="lastName" value="字面量/${key} 从环境变量,配置文件中获取值/#{SpEL}"></properties>
+     * </bean>
+     *
+     * value值复制配置文件即可
+     */
+    @Value("${person.last-name}")
+    private String lastName;
+
+    @Value("#{10*2}")
+    private Integer age;
+
+    @Value("true")
+    private Boolean boss;
+    
+    ...
+}
+```
+
+|        区别        | @ConfigurationProperties |   @Value   |
+| :----------------: | :----------------------: | :--------: |
+|        功能        | 批量注入配置文件中的属性 | 一个个指定 |
+| 松散绑定(松散语法) |           支持           |   不支持   |
+|        SpEl        |          不支持          |    支持    |
+|   JSR303数据校验   |           支持           |   不支持   |
+|    复杂类型封装    |           支持           |   不支持   |
+
+松散绑定属性名匹配规则
+
+- person.firstName:使用标准方式
+- person.first-name:大写用-
+- person.first_name:小写用_
+- PERSON_FIRST_NAME:推荐系统属性使用这种写法
+
+配置文件yml还是properties他们都能获取到值:
+
+> 如果只是在某个业务逻辑中需要获取一下配置文件中的某项值,使用@Value
+>
+> 如果专门编写了一个javabean来与配置文件进行映射,就直接使用@ConfigurationProperties
+
+#### 4.配置文件注入值数据校验
+
+```java
+@Component
+@ConfigurationProperties(prefix = "person")
+@Validated
+public class Person {
+
+    /**
+     * <bean class="Person">
+     *  <properties name="lastName" value="字面量/${key} 从环境变量,配置文件中获取值/#{SpEL}"></properties>
+     * </bean>
+     *
+     * value值复制配置文件即可
+     */
+    //@Value("${person.last-name}"
+    private String lastName;
+
+    //@Value("#{10*2}")
+    private Integer age;
+
+    @Email //email必须为邮箱格式,需要配合@ConfigurationProperties使用,@Value下校验不会生效
+    private String email;
+
+    //@Value("true")
+    private Boolean boss;
+ 	
+    ...
+}
+```
 
