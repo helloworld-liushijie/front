@@ -1,0 +1,76 @@
+body {
+    background: #dff9fb
+}
+
+.square01 {
+    width: 300px;
+    padding-bottom: 300px;
+    background-color: aqua;
+}
+
+.square02 {
+    width: 300px;
+    padding-bottom: 300px;
+    background-color: salmon;
+}
+
+.square03 {
+    width: 300px;
+    padding-bottom: 300px;
+    background-color: lightgreen
+}
+
+.square04 {
+    width: 300px;
+    padding-bottom: 300px;
+    background-color: darkblue
+}
+
+.square05 {
+    width: 300px;
+    padding-bottom: 300px;
+    background-color: palevioletred
+}
+
+.square06 {
+    width: 300px;
+    padding-bottom: 300px;
+    background-color: lawngreen
+}
+
+.square {
+    /* 定义flex container: flex | inline-flex */
+    display: none; 
+
+    /* 设置主轴方向: row | row-reverse | column | column-reverse */
+    /* flex-direction: row; */
+
+    /* 用于设置flex-item是否换行 nowrap | wrap | wrap-reverse*/
+    /* flex-wrap: wrap */
+
+    /* flex-direction和flex-wrap简写形式:值参考这两个属性 */
+    flex-flow: row wrap;
+
+    /* flex items在主轴的分布方式:flex-start | flex-end | center | space-between | space-aroud */
+    justify-content: space-around;
+}
+
+.form-control {
+    display: flex;
+    flex-flow: row wrap;
+    justify-content: center;
+    align-items: center;
+    margin: 10px 0px;
+}
+
+input {
+    border-radius: 8px;
+    border: 1px solid slategrey;
+    padding: 9px 20px;
+    opacity: 0.7;
+}
+
+label {
+    display: block;
+    width: 100px;
+}

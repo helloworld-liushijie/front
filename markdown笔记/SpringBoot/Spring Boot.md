@@ -285,7 +285,7 @@ IDE都支持使用Spring的项目创建向导快速创建spring boot项目
  - resources文件夹中目录结果
    	- static:保存所有的静态资源(js css images)
       	- templates:保存所有的模板页面(springboot默认jar包使用嵌入式的tomcat.默认不支持jsp页面)；可以使用模板引擎(freemarker,thymeleaf)
-   	- application.properties:springboot应用的配置文件;可以修改一些默认配置
+      	- application.properties:springboot应用的配置文件;可以修改一些默认配置
 
 简化配置@RestController
 
@@ -566,7 +566,7 @@ public class Person {
 
 ```java
 @Component
-@ConfigurationProperties(prefix = "person")
+@ConfigurationProperties(prefix = "person")  //默认从全局配置文件中获取值
 @Validated
 public class Person {
 
@@ -593,3 +593,115 @@ public class Person {
 }
 ```
 
+#### 5.@PropertiesSource和@ImportResource
+
+**@propertySource:加载指定的配置文件**
+
+```java
+@PropertySource(value = {"classpath:person.properties"}) //可以使用数组,导入多个配置文件
+@Component
+@ConfigurationProperties(prefix = "person")
+//@Validated
+public class Person {
+    /**
+     * <bean class="Person">
+     *  <properties name="lastName" value="字面量/${key} 从环境变量,配置文件中获取值/#{SpEL}"></properties>
+     * </bean>
+     *
+     * value值复制配置文件即可
+     */
+    //@Value("${person.last-name}"
+    private String lastName;
+
+    //@Value("#{10*2}")
+    private Integer age;
+
+    @Email //email必须为邮箱格式,需要配合@ConfigurationProperties使用,@Value下校验不会生效
+    private String email;
+
+    //@Value("true")
+    private Boolean boss;
+    
+    ...
+}
+```
+
+**@ImportResource:导入spring的配置文件,让配置文件里面的内容生效**
+
+SpringBoot里面没有spring的配置文件,我们自己编写的配置文件,也不能自动识别;
+
+想让Spring的配置文件生效,加载进来；@ImportResource标注在一个配置类上
+
+```java
+@ImportResource(locations = {"classpath: beans.xml"})
+```
+
+不来编写spring的配置文件
+
+```xml
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd">
+
+    <bean id="helloService" class="com.lsj.service.HelloService"></bean>
+</beans>
+```
+
+springboot推荐给容器中添加组件的方式;推荐使用全注解的方式
+
+1.配置类=====spring配置文件
+
+2.使用@bean给容器中添加组件--必须将类放在启动类路径下(入坑一次)
+
+```java
+/**
+ * @Configuration 指明当前类是配置类；就是来替代之前的spring配置文件
+ */
+@Configuration
+public class MyAppConfig {
+
+    //将方法的返回值添加到容器中,容器中这个组件的默认id就是方法名
+    @Bean
+    public HelloService helloService01() {
+        System.out.println("配置类@Bean给容器中添加组件了...");
+        return new HelloService();
+    }
+}
+```
+
+### 4.配置文件占位符
+
+#### 1.随机数
+
+random.value、{random.int}、${random.long}、
+
+random.int(10)、{random.int[1024,65536]}
+
+application.properties文件:
+
+```properties
+person.last-name=张三${random.uuid}
+person.age=${random.int}
+person.email=1690150504@qq.com
+person.boss=true
+person.birth=2019/1/1
+person.maps.k1=v1
+person.maps.k2=v2
+person.lists=a,b,c
+person.dog.name=${person.hello:hello}_dog
+person.dog.age=1
+```
+
+tips:
+
+- yml,properties不提示解决
+
+  >File -> Settings -> Plugins --安装spring Assistant插件,然后重启 
+
+java生成uuid
+
+```java
+String uuid = UUID.randomUUID().toString().replaceAll("-","");  
+System.out.println(uuid);
+```
