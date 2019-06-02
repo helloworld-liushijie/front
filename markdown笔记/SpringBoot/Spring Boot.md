@@ -689,6 +689,7 @@ person.birth=2019/1/1
 person.maps.k1=v1
 person.maps.k2=v2
 person.lists=a,b,c
+## 使用冒号指定默认值
 person.dog.name=${person.hello:hello}_dog
 person.dog.age=1
 ```
@@ -705,3 +706,58 @@ java生成uuid
 String uuid = UUID.randomUUID().toString().replaceAll("-","");  
 System.out.println(uuid);
 ```
+
+### 5.profile
+
+#### 1.多profile文件
+
+我们在主配置文件编写的时候,文件名可以是appication-{profile}.properties/yml,默认使用application.properties的配置
+
+#### 2.yml支持多文档块方式
+
+```yaml
+server:
+  port: 8081
+spring:
+  profiles:
+    active: prod
+---
+
+server:
+  port: 8083
+spring:
+  profiles: dev
+
+---
+
+server:
+  port: 8084
+spring:
+  profiles: prod
+```
+
+#### 3.激活指定profile
+
+- 在配置文件中指定spring.profiles.active=dev
+
+  ```properties
+  # 激活开发环境
+  spring.profiles.active=dev //根据application-{profile}.properties的profile名
+  如: application-dev.properties | application-prod.properties(生产环境)
+  ```
+
+- 命令行:
+
+  --spring.profiles.active=dev
+
+  ![](picture/p2.png)
+
+  或者:
+
+  java -jar springboot-0.0.1-SNAPSHOT.jar --spring.profile.activer=dev
+
+- 虚拟机参数
+
+  -Dspring.profiles.active=dev
+
+  ![](./picture/p4.png)
