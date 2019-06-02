@@ -1,0 +1,31 @@
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0
+}
+
+.container {
+    background-color: #eee;
+    margin: 50px auto;
+    width: 90%;
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-around;
+    align-items: center
+}
+
+.one {
+    width: 300px;
+    align-self: flex-end;
+    flex-grow: 3
+}
+
+.two {
+    width: 250px;
+    flex-grow: 1
+}
+
+.three {
+    width: 400px;
+    flex-grow: 1
+}
