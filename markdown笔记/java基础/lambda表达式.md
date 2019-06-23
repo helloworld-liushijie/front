@@ -378,3 +378,211 @@ static void computeIfAbsent() {
 > 1.代码简洁函数式编程写出的代码简洁且意图明显,使用stream接口告别for循环
 >
 > 2.多核友好,java函数式编程使得编写并行程序更加简单,需要的全部就是调用parallel()方法
+
+stream不是一种数据结构,只是数据源的一种视图。数据源可以是数组,java容器,i/o channel等。通常stream不会手动创建,而是调用对应的工具方法，比如：
+
+- 调用Collection.stream()或者Collection.parallelStream()方法
+
+- 调用Arrays.stream(T[] array)方法
+
+  ![./img/p1.png](/home/l/code/front/markdown笔记/java基础/img/p1.png)
+
+其中IntStream,LongStream,DoubleStream对应三种基本数据类型(int,long,double--不是包装类型),Stream对应所有剩余类的stream视图。为不同数据类型设置不同stream接口-->1.可以提高性能2.增加特定接口函数
+
+stream和collections的不同:
+
+- 无存储.stream不是一种数据结构,只是某种数据源的一个视图,数据源是一个视图,数据源可以是一个数组,java容器,或io channel等
+
+- 为函数式编程而生,对stream的任何修改都不会修改背后的数据源,比如对stream执行过滤操作并不会删除被过滤的元素,而是产生一个不包含被过滤元素的新stream
+
+- 惰式执行,stream上的操作并不会立即执行,只有等用户真正需要结果的时候才会执行
+
+- *stream*只能被“消费”一次，一旦遍历过就会失效，就像容器的迭代器那样，想要再次遍历必须重新生成。
+
+| 操作类型 | 接口方法                                                     |
+| -------- | ------------------------------------------------------------ |
+| 中间操作 | concat() distinct() filter() flatMap() limit() map() peek() <br/>skip() sorted() parallel() sequential() unordered() |
+| 结束操作 | allMatch() anyMatch() collect() count() findAny() findFirst() <br/>forEach() forEachOrdered() max() min() noneMatch() reduce() toArray() |
+
+#### forEach
+
+```java
+// 使用Stream.forEach()迭代
+Stream<String> stream = Stream.of("I", "love", "you", "too");
+stream.forEach(str -> System.out.println(str));
+```
+
+#### filter(去除重复元素)
+
+```java
+Stream<String> stream = Stream.of("i","los","sdg","love");
+stream.filter(s -> s.length() == 3).forEach(s -> System.out.println(s));
+```
+
+#### sorted(自定义排序)
+
+```java
+Stream<String> stream = Stream.of("i","love","you","too");
+stream.sorted((x,y) -> x.length() - y.length()).forEach(x -> System.out.println(x));
+```
+
+#### toUpperCase
+
+```java
+Stream<String> stream　= Stream.of("I", "love", "you", "too");
+stream.map(str -> str.toUpperCase())
+    .forEach(str -> System.out.println(str));
+```
+
+#### flatMap:合并
+
+```java
+Stream<List<Integer>> stream = Stream.of(Arrays.asList(1,2,3),Arrays.asList(11,5));
+stream.flatMap(list -> list.stream()).forEach(i -> System.out.println(i));
+```
+
+#### reduce
+
+```java
+// 找出最长的单词
+Stream<String> stream = Stream.of("I", "love", "you", "too");
+Optional<String> longest = stream.reduce((s1, s2) -> s1.length()>=s2.length() ? s1 : s2);
+//Optional<String> longest = stream.max((s1, s2) -> s1.length()-s2.length());
+System.out.println(longest.get());
+```
+
+```java
+//计算一组字符串长度
+Stream<String> stream = Stream.of("hi","i","ok","too");
+Integer length = stream.reduce(0,(sum, str) -> sum+str.length(),(a, b) -> a + b);//8
+```
+
+## 7.collect:多数功能可通过collect实现
+
+```java
+ //将stream转为容器或map
+Stream<String> stream = Stream.of("ji","sfj","sff","too","ok");
+//List<String> list = stream.collect(Collectors.toList());
+//Set<String> set = stream.collect(Collectors.toSet());
+Map<String,Object> map = stream.collect(Collectors.toMap(Function.identity(),String::length));
+System.out.println(map);//注意:stream执行后会立即关闭
+```
+
+> 一.Function.identity()是干什么的?
+>
+> *Function*是一个接口，那么`Function.identity()`是什么意思呢？这要从两方面解释：
+>
+> 1. Java 8允许在接口中加入具体方法。接口中的具体方法有两种，*default*方法和*static*方法，`identity()`就是*Function*接口的一个静态方法。
+> 2. `Function.identity()`返回一个输出跟输入一样的Lambda表达式对象，等价于形如`t -> t`形式的Lambda表达式。
+>
+> 二.String::length是干什么的?
+>
+> 诸如`String::length`的语法形式叫做方法引用（*method references*），这种语法用来替代某些特定形式Lambda表达式。如果Lambda表达式的全部内容就是调用一个已有的方法，那么可以用方法引用来替代Lambda表达式。方法引用可以细分为四类：
+>
+> | 方法引用类别       | 举例           |
+> | ------------------ | -------------- |
+> | 引用静态方法       | Integer::sum   |
+> | 引用某个对象的方法 | list::add      |
+> | 引用某个类的方法   | String::length |
+> | 引用构造方法       | HashMap::new   |
+>
+> 三.Collector是什么?
+>
+> 收集器（*Collector*）是为`Stream.collect()`方法量身打造的工具接口（类）,
+>
+> *collect()*方法定义为`<R> R collect(Supplier<R> supplier, BiConsumer<R,? super T> accumulator, BiConsumer<R,R> combiner)`
+
+### 使用collect()生成Collection
+
+前面已经提到通过`collect()`方法将*Stream*转换成容器的方法，这里再汇总一下。将*Stream*转换成*List*或*Set*是比较常见的操作，所以*Collectors*工具已经为我们提供了对应的收集器，通过如下代码即可完成：
+
+```java
+// 将Stream转换成List或Set
+Stream<String> stream = Stream.of("I", "love", "you", "too");
+List<String> list = stream.collect(Collectors.toList()); // (1)
+Set<String> set = stream.collect(Collectors.toSet()); // (2)
+```
+
+上述代码能够满足大部分需求，但由于返回结果是接口类型，我们并不知道类库实际选择的容器类型是什么，有时候我们可能会想要人为指定容器的实际类型，这个需求可通过`Collectors.toCollection(Supplier<C> collectionFactory)`方法完成。
+
+```java
+// 使用toCollection()指定规约容器的类型
+ArrayList<String> arrayList = stream.collect(Collectors.toCollection(ArrayList::new));// (3)
+HashSet<String> hashSet = stream.collect(Collectors.toCollection(HashSet::new));// (4)
+```
+
+### 使用collect()生成Map
+
+- 使用`Collectors.toMap()`生成的收集器，用户需要指定如何生成*Map*的*key*和*value*
+
+```java
+// 使用toMap()统计学生GPA
+Map<Student, Double> studentToGPA =
+students.stream().collect(Collectors.toMap(Function.identity(),// 如何生成key
+	student -> computeGPA(student)));// 如何生成value
+```
+
+- 使用`partitioningBy()`生成的收集器，这种情况适用于将`Stream`中的元素依据某个二值逻辑（满足条件，或不满足）分成互补相交的两部分，比如男女性别、成绩及格与否等。
+
+```java
+// Partition students into passing and failing
+Map<Boolean, List<Student>> passingFailing = students.stream()
+         .collect(Collectors.partitioningBy(s -> s.getGrade() >= PASS_THRESHOLD));
+```
+
+- 情况3：使用`groupingBy()`生成的收集器，这是比较灵活的一种情况。跟SQL中的*group by*语句类似，这里的*groupingBy()*也是按照某个属性对数据进行分组
+
+```java
+// Group employees by department
+Map<Department, List<Employee>> byDept = employees.stream()
+            .collect(Collectors.groupingBy(Employee::getDepartment));
+```
+
+以上只是分组的最基本用法，有些时候仅仅分组是不够的。在SQL中使用*group by*是为了协助其他查询，比如*1. 先将员工按照部门分组，2. 然后统计每个部门员工的人数*。Java类库设计者也考虑到了这种情况，增强版的`groupingBy()`能够满足这种需求。增强版的`groupingBy()`允许我们对元素分组之后再执行某种运算，比如求和、计数、平均值、类型转换等。这种先将元素分组的收集器叫做**上游收集器**，之后执行其他运算的收集器叫做**下游收集器**(*downstream Collector*)。
+
+```java
+// 使用下游收集器统计每个部门的人数
+Map<Department, Integer> totalByDept = employees.stream()
+                    .collect(Collectors.groupingBy(Employee::getDepartment,
+                                                   Collectors.counting()));// 下游收集器
+```
+
+上面代码的逻辑是不是越看越像SQL？高度非结构化。还有更狠的，下游收集器还可以包含更下游的收集器，这绝不是为了炫技而增加的把戏，而是实际场景需要。考虑将员工按照部门分组的场景，如果*我们想得到每个员工的名字（字符串），而不是一个个*Employee*对象*，可通过如下方式做到：
+
+```java
+// 按照部门对员工分布组，并只保留员工的名字
+Map<Department, List<String>> byDept = employees.stream()
+                .collect(Collectors.groupingBy(Employee::getDepartment,
+                        Collectors.mapping(Employee::getName,// 下游收集器
+                                Collectors.toList())));// 更下游的收集器
+```
+
+### 使用collect()做字符串join
+
+```java
+// 使用Collectors.joining()拼接字符串
+Stream<String> stream = Stream.of("I", "love", "you");
+//String joined = stream.collect(Collectors.joining());// "Iloveyou"
+//String joined = stream.collect(Collectors.joining(","));// "I,love,you"
+String joined = stream.collect(Collectors.joining(",", "{", "}"));// "{I,love,you}"
+```
+
+```java
+int longestStringLengthStartingWithA
+        = strings.stream()
+              .filter(s -> s.startsWith("A"))
+              .mapToInt(String::length)
+              .max();
+```
+
+
+
+stream操作分类
+
+| Stream操作分类                    |                            |                                                              |
+| :-------------------------------- | -------------------------- | :----------------------------------------------------------: |
+| 中间操作(Intermediate operations) | 无状态(Stateless)          | unordered() filter() map() mapToInt() mapToLong() mapToDouble() flatMap() flatMapToInt() flatMapToLong() flatMapToDouble() peek() |
+|                                   | 有状态(Stateful)           |         distinct() sorted() sorted() limit() skip()          |
+| 结束操作(Terminal operations)     | 非短路操作                 | forEach() forEachOrdered() toArray() reduce() collect() max() min() count() |
+|                                   | 短路操作(short-circuiting) |   anyMatch() allMatch() noneMatch() findFirst() findAny()    |
+
