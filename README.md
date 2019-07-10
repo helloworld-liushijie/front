@@ -8,3 +8,6 @@
 ###### safari logo
 - safari_logo/safari.html
 - [页面预览](https://helloworld-liushijie.github.io/front/safari_logo/safari.html)
+###### 滚动指示器
+- css3/scroll-indicator.html
+- [页面预览](https://helloworld-liushijie.github.io/front/css3/scroll-indicator.html)
