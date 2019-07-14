@@ -104,3 +104,9 @@
 >更多命令查看:
 >
 >https://docs.docker.com/engine/reference/commandline/docker
+
+#### 3.docker安装mysql--具体操作参考dockerhub
+
+> 1.docker pull mysql
+>
+> 2.$ docker run --name some-mysql -e MYSQL_ROOT_PASSWORD=my-secret-pw -d mysql:tag
